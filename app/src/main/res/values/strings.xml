@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE resources [
+        <!ENTITY app_name "Movie App">
+        ]>
+<resources>
+    <string name="app_name">&app_name;</string>
+    <string name="genre_selection_greeting">Welcome to &app_name;</string>
+    <string name="retry">Retry</string>
+    <string name="post_error">An error occurred while loading the posts</string>
+    <string name="done_button">Done</string>
+</resources>

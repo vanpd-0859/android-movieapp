@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="appBackgroundGradientStart">#6C6C6C</color>
+    <color name="appBackgroundGradientEnd">#000000</color>
+    <color name="doneButton">#49525D</color>
+</resources>
