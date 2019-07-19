@@ -1,12 +1,15 @@
 package com.sun.movieapp.utils
 
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
+import com.sun.movieapp.R
+import com.sun.movieapp.model.Genre
 import com.sun.movieapp.utils.extensions.getParentActivity
 
 @BindingAdapter("mutableVisibility")
@@ -19,17 +22,27 @@ fun setMutableVisibility(view: View, visibility: MutableLiveData<Boolean>?) {
     }
 }
 
-@BindingAdapter("mutableText")
-fun setMutableText(view: TextView, text: MutableLiveData<String>?) {
-    val parentActivity:AppCompatActivity? = view.getParentActivity()
-    if(parentActivity != null && text != null) {
-        text.observe(parentActivity, Observer {
-                value -> view.text = value ?: ""
+@BindingAdapter("adapter")
+fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+    view.adapter = adapter
+}
+
+@BindingAdapter("toggleBackground")
+fun setBackground(layout: RelativeLayout, isSelected: MutableLiveData<Boolean>?) {
+    val mParentActivity: AppCompatActivity? = layout.getParentActivity()
+    if (mParentActivity != null && isSelected != null) {
+        isSelected.observe(mParentActivity, Observer {
+                value -> layout.setBackgroundResource(if (value) R.drawable.border_genre_row_selected else R.drawable.border_genre_row_unselected)
         })
     }
 }
 
-@BindingAdapter("adapter")
-fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
-    view.adapter = adapter
+@BindingAdapter("itemObject")
+fun setGenreName(textView: TextView, genre: MutableLiveData<Genre>?) {
+    val mParentActivity: AppCompatActivity? = textView.getParentActivity()
+    if (mParentActivity != null && genre != null) {
+        genre.observe(mParentActivity, Observer {
+                item -> textView.text = item.name
+        })
+    }
 }

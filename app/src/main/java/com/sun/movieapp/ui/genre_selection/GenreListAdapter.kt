@@ -10,6 +10,7 @@ import com.sun.movieapp.model.Genre
 
 class GenreListAdapter: RecyclerView.Adapter<GenreListAdapter.ViewHolder>() {
     private lateinit var mGenreList: List<Genre>
+    var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val mBinding: RowGenreItemBinding = DataBindingUtil.inflate(
@@ -30,12 +31,17 @@ class GenreListAdapter: RecyclerView.Adapter<GenreListAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val mBinding: RowGenreItemBinding):RecyclerView.ViewHolder(mBinding.root) {
+    inner class ViewHolder(private val mBinding: RowGenreItemBinding):RecyclerView.ViewHolder(mBinding.root) {
         private val mViewModel = GenreItemViewModel()
 
         fun bind(genre: Genre){
             mViewModel.bind(genre)
+            mViewModel.listener = listener
             mBinding.viewModel = mViewModel
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(genre: Genre?)
     }
 }

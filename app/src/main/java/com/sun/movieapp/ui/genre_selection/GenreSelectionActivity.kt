@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.sun.movieapp.R
 import com.sun.movieapp.base.BaseActivity
 import com.sun.movieapp.databinding.ActivityGenreSelectionBinding
-import com.sun.movieapp.network.GenreService
-import com.sun.movieapp.network.Network
-import com.sun.movieapp.repository.GenreRepository
 import android.os.Build
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
+import com.sun.movieapp.base.ViewModelFactory
+import com.sun.movieapp.ui.home.HomeActivity
 import com.sun.movieapp.utils.extensions.showError
 import kotlinx.android.synthetic.main.activity_genre_selection.*
 
@@ -49,14 +49,22 @@ class GenreSelectionActivity: BaseActivity() {
         }
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_genre_selection)
-        mBinding.rvGenreList.layoutManager = GridLayoutManager(this, 2)
+        rv_genre_list.layoutManager = GridLayoutManager(this, 2)
 
-        val repository = GenreRepository(Network.create(GenreService::class.java))
-        mViewModel = ViewModelProviders.of(this, GenreSelectionViewModelFactory(repository)).get(GenreSelectionViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(GenreSelectionViewModel::class.java)
         mViewModel.error.observe(this, Observer {
             error -> cl_genre_selection.showError(error, Pair(R.string.retry, mViewModel.errorClickListener))
         })
         mBinding.viewModel = mViewModel
+        mViewModel.isDoneButtonEnabled.observe(this, Observer {
+            btn_done.isEnabled = it
+        })
+        btn_done.setOnClickListener {
+            mViewModel.saveSelectedGenres()
+            val intent = Intent(this@GenreSelectionActivity, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     @SuppressLint("NewApi")

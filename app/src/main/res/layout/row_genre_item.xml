@@ -10,20 +10,21 @@
 
         <RelativeLayout
                 android:id="@+id/rl_genre_item"
-                android:background="@drawable/border_genre_row"
                 android:padding="25dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.onItemClick(viewModel.getGenre())}"
+                app:toggleBackground="@{viewModel.getIsSelected()}">
             <TextView
                     android:id="@+id/tv_genre_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    app:mutableText="@{viewModel.getGenreName()}"
+                    app:itemObject="@{viewModel.getGenreLiveData()}"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"

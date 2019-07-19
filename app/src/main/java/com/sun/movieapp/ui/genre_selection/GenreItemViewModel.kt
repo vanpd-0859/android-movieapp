@@ -5,13 +5,31 @@ import com.sun.movieapp.base.BaseViewModel
 import com.sun.movieapp.model.Genre
 
 class GenreItemViewModel: BaseViewModel() {
-    private val mGenreName: MutableLiveData<String> = MutableLiveData()
+    private val mGenre: MutableLiveData<Genre> = MutableLiveData()
+    private val mIsSelected: MutableLiveData<Boolean> = MutableLiveData()
+    var listener: GenreListAdapter.OnItemClickListener? = null
 
     fun bind(genre: Genre) {
-        mGenreName.value = genre.name
+        mGenre.value = genre
+        mIsSelected.value = false
     }
 
-    fun getGenreName(): MutableLiveData<String>{
-        return mGenreName
+    fun getGenreLiveData(): MutableLiveData<Genre> {
+        return mGenre
+    }
+
+    fun getGenre(): Genre? {
+        return mGenre.value
+    }
+
+    fun getIsSelected(): MutableLiveData<Boolean> {
+        return mIsSelected
+    }
+
+    fun onItemClick(genre: Genre?) {
+        listener?.onItemClick(genre)
+        mIsSelected.value?.let {
+            mIsSelected.value = !it
+        }
     }
 }
