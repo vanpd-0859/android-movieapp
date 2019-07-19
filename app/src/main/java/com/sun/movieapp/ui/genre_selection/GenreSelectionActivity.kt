@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_genre_selection.*
 class GenreSelectionActivity: BaseActivity() {
     private lateinit var mBinding: ActivityGenreSelectionBinding
     private lateinit var mViewModel: GenreSelectionViewModel
-    private val mCurrentApiVersion = android.os.Build.VERSION.SDK_INT;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +32,7 @@ class GenreSelectionActivity: BaseActivity() {
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
 
         // This work only for android 4.4+
-        if (mCurrentApiVersion >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             window.decorView.systemUiVisibility = flags
 
@@ -63,7 +62,7 @@ class GenreSelectionActivity: BaseActivity() {
     @SuppressLint("NewApi")
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (mCurrentApiVersion >= Build.VERSION_CODES.KITKAT && hasFocus) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

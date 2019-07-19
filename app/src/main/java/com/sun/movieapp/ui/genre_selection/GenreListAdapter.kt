@@ -11,18 +11,19 @@ import com.sun.movieapp.model.Genre
 class GenreListAdapter: RecyclerView.Adapter<GenreListAdapter.ViewHolder>() {
     private lateinit var mGenreList: List<Genre>
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenreListAdapter.ViewHolder {
-        val binding: RowGenreItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.row_genre_item, parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val mBinding: RowGenreItemBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.row_genre_item,
+            parent,
+            false)
+        return ViewHolder(mBinding)
     }
 
-    override fun onBindViewHolder(holder: GenreListAdapter.ViewHolder, position: Int) {
-        holder.bind(mGenreList[position])
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(mGenreList[position])
 
-    override fun getItemCount(): Int {
-        return if(::mGenreList.isInitialized) mGenreList.size else 0
-    }
+    override fun getItemCount(): Int = if(::mGenreList.isInitialized) mGenreList.size else 0
+
 
     fun updatePostList(genreList: List<Genre>){
         this.mGenreList = genreList

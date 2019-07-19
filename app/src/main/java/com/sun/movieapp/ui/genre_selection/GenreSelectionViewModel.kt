@@ -18,7 +18,6 @@ class GenreSelectionViewModel(
 
     init {
         loadGenres()
-        print("Hello")
     }
 
     private fun loadGenres() {
