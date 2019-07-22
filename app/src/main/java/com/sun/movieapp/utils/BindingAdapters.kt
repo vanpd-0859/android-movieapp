@@ -28,11 +28,11 @@ fun setAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
 }
 
 @BindingAdapter("toggleBackground")
-fun setBackground(layout: RelativeLayout, isSelected: MutableLiveData<Boolean>?) {
+fun setBackground(layout: RelativeLayout, genre: MutableLiveData<Genre>?) {
     val mParentActivity: AppCompatActivity? = layout.getParentActivity()
-    if (mParentActivity != null && isSelected != null) {
-        isSelected.observe(mParentActivity, Observer {
-                value -> layout.setBackgroundResource(if (value) R.drawable.border_genre_row_selected else R.drawable.border_genre_row_unselected)
+    if (mParentActivity != null && genre != null) {
+        genre.observe(mParentActivity, Observer {
+                item -> layout.setBackgroundResource(if (item.isSelected) R.drawable.border_genre_row_selected else R.drawable.border_genre_row_unselected)
         })
     }
 }

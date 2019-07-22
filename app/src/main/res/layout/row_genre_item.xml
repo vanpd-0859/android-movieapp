@@ -9,7 +9,7 @@
     </data>
 
         <RelativeLayout
-                android:id="@+id/rl_genre_item"
+                android:id="@+id/rlGenreItem"
                 android:padding="25dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
@@ -17,14 +17,14 @@
                 android:layout_marginLeft="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onItemClick(viewModel.getGenre())}"
-                app:toggleBackground="@{viewModel.getIsSelected()}">
+                android:onClick="@{(view) -> viewModel.onItemClick(view)}"
+                app:toggleBackground="@{viewModel.getGenre()}">
             <TextView
-                    android:id="@+id/tv_genre_name"
+                    android:id="@+id/tvGenreName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    app:itemObject="@{viewModel.getGenreLiveData()}"
+                    app:itemObject="@{viewModel.getGenre()}"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"

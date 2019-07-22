@@ -49,11 +49,11 @@ class GenreSelectionActivity: BaseActivity() {
         }
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_genre_selection)
-        rv_genre_list.layoutManager = GridLayoutManager(this, 2)
+        rvGenre.layoutManager = GridLayoutManager(this, 2)
 
         mViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(GenreSelectionViewModel::class.java)
         mViewModel.error.observe(this, Observer {
-            error -> cl_genre_selection.showError(error, Pair(R.string.retry, mViewModel.errorClickListener))
+            error -> clGenreSelection.showError(error, Pair(R.string.retry, mViewModel.errorClickListener))
         })
         mBinding.viewModel = mViewModel
         mViewModel.isDoneButtonEnabled.observe(this, Observer {

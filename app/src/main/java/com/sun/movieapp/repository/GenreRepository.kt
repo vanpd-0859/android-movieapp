@@ -4,7 +4,6 @@ import com.sun.movieapp.base.BaseRepository
 import com.sun.movieapp.model.Genre
 import com.sun.movieapp.model.GenreDao
 import com.sun.movieapp.network.GenreService
-import com.sun.movieapp.utils.extensions.async
 import io.reactivex.Completable
 import io.reactivex.Single
 

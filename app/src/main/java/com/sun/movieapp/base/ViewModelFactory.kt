@@ -15,16 +15,12 @@ class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvid
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         when {
             modelClass.isAssignableFrom(GenreSelectionViewModel::class.java) -> {
-                val db = Room.databaseBuilder(activity.applicationContext, AppDatabase::class.java, "MovieApp").build()
-                val repository = GenreRepository(Network.create(GenreService::class.java), db.genreDao())
                 @Suppress("UNCHECKED_CAST")
-                return GenreSelectionViewModel(repository) as T
+                return GenreSelectionViewModel(BaseRepository.getGenreRepository(activity)) as T
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
-                val db = Room.databaseBuilder(activity.applicationContext, AppDatabase::class.java, "MovieApp").build()
-                val repository = GenreRepository(Network.create(GenreService::class.java), db.genreDao())
                 @Suppress("UNCHECKED_CAST")
-                return SplashViewModel(repository) as T
+                return SplashViewModel(BaseRepository.getGenreRepository(activity)) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

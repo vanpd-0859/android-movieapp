@@ -10,19 +10,17 @@ import com.sun.movieapp.utils.extensions.async
 class SplashViewModel(
     private val mGenreRepository: GenreRepository
 ): BaseViewModel() {
-    private val _favoriteGenres: MutableLiveData<List<Genre>> = MutableLiveData()
-    private val _error: MutableLiveData<Throwable> = MutableLiveData()
-    val favoriteGenres: LiveData<List<Genre>> = _favoriteGenres
-    val error: LiveData<Throwable> = _error
+    val favoriteGenres: MutableLiveData<List<Genre>> = MutableLiveData()
+    val error: MutableLiveData<Throwable> = MutableLiveData()
 
     init {
         rx {
             mGenreRepository.getFavoriteGenres()
                 .async()
                 .subscribe({
-                    _favoriteGenres.value = it
+                    favoriteGenres.value = it
                 }, {
-                    _error.value = it
+                    error.value = it
                 })
         }
     }

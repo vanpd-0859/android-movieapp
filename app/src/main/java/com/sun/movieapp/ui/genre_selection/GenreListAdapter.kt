@@ -1,6 +1,7 @@
 package com.sun.movieapp.ui.genre_selection
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -36,12 +37,19 @@ class GenreListAdapter: RecyclerView.Adapter<GenreListAdapter.ViewHolder>() {
 
         fun bind(genre: Genre){
             mViewModel.bind(genre)
-            mViewModel.listener = listener
+            mViewModel.listener = object: View.OnClickListener {
+                override fun onClick(view: View?) {
+                    val currentPosition = adapterPosition
+                    listener?.onItemClick(mGenreList[currentPosition])
+                    mGenreList[currentPosition].isSelected = !mGenreList[currentPosition].isSelected
+                    notifyItemChanged(currentPosition)
+                }
+            }
             mBinding.viewModel = mViewModel
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(genre: Genre?)
+        fun onItemClick(genre: Genre)
     }
 }

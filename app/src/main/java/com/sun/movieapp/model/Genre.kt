@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class Genre(
     @field:PrimaryKey
     val id: Int,
-    val name: String
+    val name: String,
+    var isSelected: Boolean = false
 )
