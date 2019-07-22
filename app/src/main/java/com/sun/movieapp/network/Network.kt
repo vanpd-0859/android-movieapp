@@ -1,7 +1,10 @@
 package com.sun.movieapp.network
 
-import com.sun.movieapp.utils.BASE_URL
-import com.sun.movieapp.utils.THE_MOVIE_DB_API_KEY
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.sun.movieapp.utils.ApiKeys.THE_MOVIE_DB_API_KEY
+import com.sun.movieapp.utils.Constants.BASE_URL
+import com.sun.movieapp.utils.Constants.DATE_FORMAT
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -16,11 +19,11 @@ object Network {
     @JvmStatic
     private val mRetrofitBuilder = Retrofit.Builder()
 
-    private fun setupRetrofit(retrofitBuilder: Retrofit.Builder, client: OkHttpClient): Retrofit {
+    private fun setupRetrofit(retrofitBuilder: Retrofit.Builder, client: OkHttpClient, gson: Gson? = null): Retrofit {
         return retrofitBuilder
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(if (gson != null) GsonConverterFactory.create(gson) else GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
     }
@@ -39,7 +42,8 @@ object Network {
                 return chain.proceed(mRequest)
             }
         }).build()
-        return setupRetrofit(mRetrofitBuilder, mHttpClient)
+        val gson = GsonBuilder().setDateFormat(DATE_FORMAT).create()
+        return setupRetrofit(mRetrofitBuilder, mHttpClient, gson)
             .create(service)
     }
 }

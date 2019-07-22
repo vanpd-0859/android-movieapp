@@ -16,14 +16,14 @@ class GenreRepository(
     }
 
     fun saveFavoriteGenres(genres: List<Genre>): Completable {
-        return Completable.fromCallable { mGenreDao.insertGenres(*genres.toTypedArray()) }
+        return mGenreDao.insertGenres(*genres.toTypedArray())
     }
 
     fun getFavoriteGenres(): Single<List<Genre>> {
-        return Single.fromCallable { mGenreDao.getAllGenres() }
+        return mGenreDao.getAllGenres()
     }
 
     fun deleteAllFavoritesGenres(): Completable {
-        return Completable.fromCallable { mGenreDao.deleteAllGenres() }
+        return mGenreDao.deleteAllGenres()
     }
 }

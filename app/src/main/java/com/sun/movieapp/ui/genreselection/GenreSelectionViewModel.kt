@@ -1,4 +1,4 @@
-package com.sun.movieapp.ui.genre_selection
+package com.sun.movieapp.ui.genreselection
 
 import android.util.Log
 import android.view.View
@@ -60,7 +60,7 @@ class GenreSelectionViewModel(
                 .loading(loading)
                 .subscribe(
                     {
-                        genreListAdapter.updatePostList(it)
+                        genreListAdapter.submitList(it)
                     },
                     {
                         error.value = it

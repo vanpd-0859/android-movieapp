@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.sun.movieapp.base.BaseActivity
 import com.sun.movieapp.base.ViewModelFactory
-import com.sun.movieapp.ui.genre_selection.GenreSelectionActivity
+import com.sun.movieapp.ui.genreselection.GenreSelectionActivity
 import com.sun.movieapp.ui.home.HomeActivity
 
 class SplashActivity: BaseActivity() {

@@ -5,7 +5,7 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.sun.movieapp.ui.genre_selection.GenreItemViewModel" />
+                type="com.sun.movieapp.ui.genreselection.GenreItemViewModel"/>
     </data>
 
         <RelativeLayout
@@ -18,13 +18,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{(view) -> viewModel.onItemClick(view)}"
-                app:toggleBackground="@{viewModel.getGenre()}">
+                app:toggleBackground="@{viewModel.isSelected()}">
             <TextView
                     android:id="@+id/tvGenreName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    app:itemObject="@{viewModel.getGenre()}"
+                    app:mutableText="@{viewModel.getName()}"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"

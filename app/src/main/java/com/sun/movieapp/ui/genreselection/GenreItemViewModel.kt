@@ -1,7 +1,9 @@
-package com.sun.movieapp.ui.genre_selection
+package com.sun.movieapp.ui.genreselection
 
 import android.view.View
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.sun.movieapp.base.BaseViewModel
 import com.sun.movieapp.model.Genre
 
@@ -13,9 +15,9 @@ class GenreItemViewModel: BaseViewModel() {
         mGenre.value = genre
     }
 
-    fun getGenre(): MutableLiveData<Genre> {
-        return mGenre
-    }
+    fun getName(): LiveData<String> = Transformations.map(mGenre, { it.name })
+
+    fun isSelected(): LiveData<Boolean> = Transformations.map(mGenre, { it.isSelected })
 
     fun onItemClick(view: View?) {
         listener?.onClick(view)

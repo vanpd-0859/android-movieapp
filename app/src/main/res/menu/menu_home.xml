@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/mnuSearch"
+            android:title="@string/menu_search"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_search"/>
+    <item
+            android:id="@+id/mnuExpand"
+            android:title="@string/menu_expand"
+            app:showAsAction="ifRoom"
+            android:icon="@drawable/ic_menu"/>
+</menu>

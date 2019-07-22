@@ -1,4 +1,4 @@
-package com.sun.movieapp.ui.genre_selection
+package com.sun.movieapp.ui.genreselection
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -53,7 +53,7 @@ class GenreSelectionActivity: BaseActivity() {
 
         mViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(GenreSelectionViewModel::class.java)
         mViewModel.error.observe(this, Observer {
-            error -> clGenreSelection.showError(error, Pair(R.string.retry, mViewModel.errorClickListener))
+            clGenreSelection.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
         })
         mBinding.viewModel = mViewModel
         mViewModel.isDoneButtonEnabled.observe(this, Observer {
