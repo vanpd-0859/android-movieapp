@@ -1,4 +1,4 @@
-package com.sun.movieapp.ui.genre_selection
+package com.sun.movieapp.ui.genreselection
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -7,20 +7,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.sun.movieapp.R
 import com.sun.movieapp.base.BaseActivity
 import com.sun.movieapp.databinding.ActivityGenreSelectionBinding
-import com.sun.movieapp.network.GenreService
-import com.sun.movieapp.network.Network
-import com.sun.movieapp.repository.GenreRepository
 import android.os.Build
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.View
 import androidx.lifecycle.Observer
+import com.sun.movieapp.base.ViewModelFactory
+import com.sun.movieapp.ui.home.HomeActivity
 import com.sun.movieapp.utils.extensions.showError
 import kotlinx.android.synthetic.main.activity_genre_selection.*
 
 class GenreSelectionActivity: BaseActivity() {
     private lateinit var mBinding: ActivityGenreSelectionBinding
     private lateinit var mViewModel: GenreSelectionViewModel
-    private val mCurrentApiVersion = android.os.Build.VERSION.SDK_INT;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +32,7 @@ class GenreSelectionActivity: BaseActivity() {
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
 
         // This work only for android 4.4+
-        if (mCurrentApiVersion >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
             window.decorView.systemUiVisibility = flags
 
@@ -50,20 +49,28 @@ class GenreSelectionActivity: BaseActivity() {
         }
 
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_genre_selection)
-        mBinding.rvGenreList.layoutManager = GridLayoutManager(this, 2)
+        rvGenre.layoutManager = GridLayoutManager(this, 2)
 
-        val repository = GenreRepository(Network.create(GenreService::class.java))
-        mViewModel = ViewModelProviders.of(this, GenreSelectionViewModelFactory(repository)).get(GenreSelectionViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(GenreSelectionViewModel::class.java)
         mViewModel.error.observe(this, Observer {
-            error -> cl_genre_selection.showError(error, Pair(R.string.retry, mViewModel.errorClickListener))
+            clGenreSelection.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
         })
         mBinding.viewModel = mViewModel
+        mViewModel.isDoneButtonEnabled.observe(this, Observer {
+            btn_done.isEnabled = it
+        })
+        btn_done.setOnClickListener {
+            mViewModel.saveSelectedGenres()
+            val intent = Intent(this@GenreSelectionActivity, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     @SuppressLint("NewApi")
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (mCurrentApiVersion >= Build.VERSION_CODES.KITKAT && hasFocus) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && hasFocus) {
             window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

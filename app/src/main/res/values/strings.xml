@@ -6,6 +6,10 @@
     <string name="app_name">&app_name;</string>
     <string name="genre_selection_greeting">Welcome to &app_name;</string>
     <string name="retry">Retry</string>
-    <string name="post_error">An error occurred while loading the posts</string>
+    <string name="post_error">An error occurred while loading the movies</string>
     <string name="done_button">Done</string>
+    <string name="upcoming_movie">Upcoming Movies</string>
+    <string name="popular_movie">Popular Movies</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_expand">Expand</string>
 </resources>

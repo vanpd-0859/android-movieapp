@@ -1,10 +1,6 @@
 package com.sun.movieapp.base
 
 import androidx.lifecycle.ViewModel
-import com.sun.movieapp.network.GenreService
-import com.sun.movieapp.network.Network
-import com.sun.movieapp.repository.GenreRepository
-import com.sun.movieapp.ui.genre_selection.GenreSelectionViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
