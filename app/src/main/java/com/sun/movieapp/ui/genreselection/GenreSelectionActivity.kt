@@ -57,9 +57,9 @@ class GenreSelectionActivity: BaseActivity() {
         })
         mBinding.viewModel = mViewModel
         mViewModel.isDoneButtonEnabled.observe(this, Observer {
-            btn_done.isEnabled = it
+            btnDone.isEnabled = it
         })
-        btn_done.setOnClickListener {
+        btnDone.setOnClickListener {
             mViewModel.saveSelectedGenres()
             val intent = Intent(this@GenreSelectionActivity, HomeActivity::class.java)
             startActivity(intent)

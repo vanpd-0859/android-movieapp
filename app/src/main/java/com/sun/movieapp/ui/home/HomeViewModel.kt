@@ -92,7 +92,7 @@ class HomeViewModel(
                 .skip(1)
                 .subscribe{
                     upcomingMovieAdapter.updateMovieList(it)
-                    Log.e("UPCOMING", it.toString())
+                    //Log.e("UPCOMING", it.toString())
                 }
         }
 
@@ -102,7 +102,7 @@ class HomeViewModel(
                 .skip(1)
                 .subscribe {
                     popularMovieAdapter.updateMovieList(it)
-                    Log.e("POPULAR", it.toString())
+                    //Log.e("POPULAR", it.toString())
                 }
         }
     }

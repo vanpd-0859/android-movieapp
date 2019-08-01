@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sun.movieapp.ui.genreselection.GenreSelectionViewModel
 import com.sun.movieapp.ui.home.HomeViewModel
+import com.sun.movieapp.ui.moviedetail.MovieDetailViewModel
 import com.sun.movieapp.ui.splash.SplashViewModel
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -22,6 +23,10 @@ class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvid
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 @Suppress("UNCHECKED_CAST")
                 return HomeViewModel(BaseRepository.getMovieRepository(activity)) as T
+            }
+            modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
+                @Suppress("UNCHECKED_CAST")
+                return MovieDetailViewModel(BaseRepository.getMovieRepository(activity)) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

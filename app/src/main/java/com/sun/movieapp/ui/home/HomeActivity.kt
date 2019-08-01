@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.sun.movieapp.R
 import com.sun.movieapp.base.BaseActivity
@@ -33,6 +34,11 @@ class HomeActivity: BaseActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         mViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(HomeViewModel::class.java)
 
+        val mPopularHelper = LinearSnapHelper()
+        mPopularHelper.attachToRecyclerView(rvPopularMovie)
+        val mUpcomingHelper = LinearSnapHelper()
+        mUpcomingHelper.attachToRecyclerView(rvUpcomingMovie)
+
         rvPopularMovie.adapter = mViewModel.popularMovieAdapter
         rvPopularMovie.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
@@ -44,7 +50,7 @@ class HomeActivity: BaseActivity() {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (!isLoading) {
-                    Log.d("SCROLL", "rvPopularMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}")
+                    //Log.d("SCROLL", "rvPopularMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}")
                     if (layoutManager.findLastCompletelyVisibleItemPosition() == mViewModel.getPopularMovieSize()) {
                         mViewModel.loadMorePopularMovies()
                         isLoading = true
@@ -58,7 +64,7 @@ class HomeActivity: BaseActivity() {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 if (!isLoading) {
-                    Log.d("SCROLL", "rvUpcomingMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}")
+                    //Log.d("SCROLL", "rvUpcomingMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}")
                     if (layoutManager.findLastCompletelyVisibleItemPosition() == mViewModel.getUpcommingMovieSize()) {
                         mViewModel.loadMoreUpcomingMovies()
                     }
