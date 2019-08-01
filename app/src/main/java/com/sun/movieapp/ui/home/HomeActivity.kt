@@ -39,6 +39,15 @@ class HomeActivity: BaseActivity() {
         val mUpcomingHelper = LinearSnapHelper()
         mUpcomingHelper.attachToRecyclerView(rvUpcomingMovie)
 
+        val mOnClickItemListener: (Movie) -> Unit = {
+            val intent = Intent(this@HomeActivity, MovieDetailActivity::class.java)
+            intent.putExtra(MOVIE_EXTRA, it)
+            startActivity(intent)
+        }
+
+        mViewModel.upcomingMovieAdapter = MovieListAdapter(mOnClickItemListener)
+        mViewModel.popularMovieAdapter = MovieListAdapter(mOnClickItemListener)
+
         rvPopularMovie.adapter = mViewModel.popularMovieAdapter
         rvPopularMovie.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
@@ -80,15 +89,7 @@ class HomeActivity: BaseActivity() {
             clHome.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
         })
 
-        val mOnClickItemListener = object: MovieListAdapter.OnItemClickListener {
-            override fun onItemClick(movie: Movie) {
-                val intent = Intent(this@HomeActivity, MovieDetailActivity::class.java)
-                intent.putExtra(MOVIE_EXTRA, movie)
-                startActivity(intent)
-            }
-        }
-        mViewModel.upcomingMovieAdapter.listener = mOnClickItemListener
-        mViewModel.popularMovieAdapter.listener = mOnClickItemListener
+        mViewModel.loadData()
 
         mBinding.viewModel = mViewModel
     }

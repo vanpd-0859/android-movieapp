@@ -20,14 +20,14 @@ class HomeViewModel(
         loadUpcomingMovies()
         loadPopularMovies()
     }
-    val upcomingMovieAdapter = MovieListAdapter()
-    val popularMovieAdapter = MovieListAdapter()
+    var upcomingMovieAdapter: MovieListAdapter? = null
+    var popularMovieAdapter: MovieListAdapter? = null
     private val mUpcomingMovies: BehaviorSubject<MutableList<Movie>> = BehaviorSubject.createDefault(ArrayList())
     private val mPopularMovies: BehaviorSubject<MutableList<Movie>> = BehaviorSubject.createDefault(ArrayList())
     private var mUpcomingPages = 1
     private var mPopularPages = 1
 
-    init {
+    fun loadData() {
         loadPopularMovies()
         loadUpcomingMovies()
         setData()
@@ -91,7 +91,7 @@ class HomeViewModel(
                 .async()
                 .skip(1)
                 .subscribe{
-                    upcomingMovieAdapter.updateMovieList(it)
+                    upcomingMovieAdapter?.updateMovieList(it)
                     //Log.e("UPCOMING", it.toString())
                 }
         }
@@ -101,7 +101,7 @@ class HomeViewModel(
                 .async()
                 .skip(1)
                 .subscribe {
-                    popularMovieAdapter.updateMovieList(it)
+                    popularMovieAdapter?.updateMovieList(it)
                     //Log.e("POPULAR", it.toString())
                 }
         }

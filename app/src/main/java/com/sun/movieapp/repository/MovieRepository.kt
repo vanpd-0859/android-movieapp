@@ -30,5 +30,5 @@ class MovieRepository(
 
     fun getCast(movieId: Int): Single<List<Actor>> = mMovieService.getCast(movieId).map { it.cast }
 
-    fun getVideo(movieId: Int): Single<Video?> = mMovieService.getVideos(movieId).map { it.videos.firstOrNull() }
+    fun getVideoOrNull(movieId: Int): Single<Video?> = mMovieService.getVideos(movieId).map { it.videos.firstOrNull() }
 }

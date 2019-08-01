@@ -16,21 +16,18 @@ class GenreSelectionViewModel(
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
     val errorClickListener = View.OnClickListener { loadGenres() }
-    val genreListAdapter = GenreListAdapter()
+    val genreListAdapter = GenreListAdapter {
+        mSelectedGenres.value?.let { selectedGenres ->
+            val genres = selectedGenres
+            if (selectedGenres.contains(it)) genres.remove(it) else genres.add(it)
+            mSelectedGenres.onNext(genres)
+        }
+    }
     private val mSelectedGenres: BehaviorSubject<MutableList<Genre>> = BehaviorSubject.createDefault(ArrayList())
     val isDoneButtonEnabled: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         loadGenres()
-        genreListAdapter.listener = object: GenreListAdapter.OnItemClickListener {
-            override fun onItemClick(genre: Genre) {
-                mSelectedGenres.value?.let { selectedGenres ->
-                    val genres = selectedGenres
-                    if (selectedGenres.contains(genre)) genres.remove(genre) else genres.add(genre)
-                    mSelectedGenres.onNext(genres)
-                }
-            }
-        }
         rx {
             mSelectedGenres.subscribe {
                 isDoneButtonEnabled.value = it.isNotEmpty()

@@ -12,9 +12,10 @@ import com.sun.movieapp.model.Movie
 
 
 
-class MovieListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MovieListAdapter(
+    private val mOnItemClick: ((Movie) -> Unit)? = null
+): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mMovieList: List<Movie> = ArrayList()
-    var listener: OnItemClickListener? = null
 
     companion object {
         private val VIEW_TYPE_ITEM = 0
@@ -65,7 +66,9 @@ class MovieListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             mViewModel.bind(movie)
             mViewModel.listener = object: View.OnClickListener {
                 override fun onClick(view: View?) {
-                    listener?.onItemClick(mMovieList[adapterPosition])
+                    mOnItemClick?.let {
+                        it(mMovieList[adapterPosition])
+                    }
                 }
             }
             mBinding.viewModel = mViewModel
@@ -74,9 +77,5 @@ class MovieListAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class LoadingViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val progressBar: ProgressBar = view.findViewById(R.id.pbLoading)
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(movie: Movie)
     }
 }

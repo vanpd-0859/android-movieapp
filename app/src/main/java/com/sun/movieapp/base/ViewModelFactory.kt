@@ -11,24 +11,21 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class ViewModelFactory(private val activity: AppCompatActivity): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        when {
+        @Suppress("UNCHECKED_CAST")
+        return when {
             modelClass.isAssignableFrom(GenreSelectionViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                return GenreSelectionViewModel(BaseRepository.getGenreRepository(activity)) as T
+                GenreSelectionViewModel(BaseRepository.getGenreRepository(activity))
             }
             modelClass.isAssignableFrom(SplashViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                return SplashViewModel(BaseRepository.getGenreRepository(activity)) as T
+                SplashViewModel(BaseRepository.getGenreRepository(activity))
             }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                return HomeViewModel(BaseRepository.getMovieRepository(activity)) as T
+                HomeViewModel(BaseRepository.getMovieRepository(activity))
             }
             modelClass.isAssignableFrom(MovieDetailViewModel::class.java) -> {
-                @Suppress("UNCHECKED_CAST")
-                return MovieDetailViewModel(BaseRepository.getMovieRepository(activity)) as T
+                MovieDetailViewModel(BaseRepository.getMovieRepository(activity))
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
-        }
+        } as T
     }
 }

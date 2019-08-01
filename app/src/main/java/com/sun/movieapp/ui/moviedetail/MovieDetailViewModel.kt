@@ -55,7 +55,7 @@ class MovieDetailViewModel(
                 })
         }
         rx {
-            mMovieRepository.getVideo(movie.id)
+            mMovieRepository.getVideoOrNull(movie.id)
                 .async()
                 .loading(loading)
                 .subscribe({

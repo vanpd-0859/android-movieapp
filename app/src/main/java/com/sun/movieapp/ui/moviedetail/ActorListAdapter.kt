@@ -11,8 +11,9 @@ import com.sun.movieapp.R
 import com.sun.movieapp.databinding.RowActorItemBinding
 import com.sun.movieapp.model.Actor
 
-class ActorListAdapter: ListAdapter<Actor, ActorListAdapter.ViewHolder>(mDiffCalback) {
-    var listener: ActorListAdapter.OnItemClickListener? = null
+class ActorListAdapter(
+    private val mOnItemClick: ((Actor) -> Unit)? = null
+): ListAdapter<Actor, ActorListAdapter.ViewHolder>(mDiffCalback) {
 
     companion object {
         private val mDiffCalback = object: DiffUtil.ItemCallback<Actor>() {
@@ -46,14 +47,12 @@ class ActorListAdapter: ListAdapter<Actor, ActorListAdapter.ViewHolder>(mDiffCal
             mViewModel.bind(actor)
             mViewModel.listener = object: View.OnClickListener {
                 override fun onClick(view: View?) {
-                    listener?.onItemClick(getItem(adapterPosition))
+                    mOnItemClick?.let {
+                        it(getItem(adapterPosition))
+                    }
                 }
             }
             mBinding.viewModel = mViewModel
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(actor: Actor)
     }
 }
