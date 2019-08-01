@@ -21,4 +21,10 @@ interface MovieService {
 
     @GET("movie/{id}/videos")
     fun getVideos(@Path("id") movieId: Int): Single<VideoResponse>
+
+    @GET("search/movie")
+    fun searchMovie(@Query("query") query: String, @Query("page") page: Int): Single<MovieResponse>
+
+    @GET("discover/movie")
+    fun searchMovieByGenre(@Query("with_genres") genreIdList: String, @Query("page") page: Int): Single<MovieResponse>
 }

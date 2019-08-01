@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sun.movieapp.R
@@ -13,21 +12,7 @@ import com.sun.movieapp.model.Actor
 
 class ActorListAdapter(
     private val mOnItemClick: ((Actor) -> Unit)? = null
-): ListAdapter<Actor, ActorListAdapter.ViewHolder>(mDiffCalback) {
-
-    companion object {
-        private val mDiffCalback = object: DiffUtil.ItemCallback<Actor>() {
-            override fun areItemsTheSame(oldItem: Actor, newItem: Actor): Boolean {
-                return oldItem.personId == newItem.personId
-            }
-
-            override fun areContentsTheSame(oldItem: Actor, newItem: Actor): Boolean {
-                return oldItem.name == newItem.name &&
-                        oldItem.profilePath == newItem.profilePath
-            }
-        }
-    }
-
+): ListAdapter<Actor, ActorListAdapter.ViewHolder>(Actor.mDiffCalback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val mBinding: RowActorItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -47,9 +32,7 @@ class ActorListAdapter(
             mViewModel.bind(actor)
             mViewModel.listener = object: View.OnClickListener {
                 override fun onClick(view: View?) {
-                    mOnItemClick?.let {
-                        it(getItem(adapterPosition))
-                    }
+                    mOnItemClick?.invoke(getItem(adapterPosition))
                 }
             }
             mBinding.viewModel = mViewModel

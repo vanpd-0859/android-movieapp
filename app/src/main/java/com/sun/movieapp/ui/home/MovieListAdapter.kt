@@ -66,9 +66,7 @@ class MovieListAdapter(
             mViewModel.bind(movie)
             mViewModel.listener = object: View.OnClickListener {
                 override fun onClick(view: View?) {
-                    mOnItemClick?.let {
-                        it(mMovieList[adapterPosition])
-                    }
+                    mOnItemClick?.invoke(mMovieList[adapterPosition])
                 }
             }
             mBinding.viewModel = mViewModel

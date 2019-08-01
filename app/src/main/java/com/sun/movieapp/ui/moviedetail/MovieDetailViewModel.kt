@@ -1,6 +1,7 @@
 package com.sun.movieapp.ui.moviedetail
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -21,6 +22,7 @@ class MovieDetailViewModel(
 ): BaseViewModel() {
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
+    val errorClickListener = View.OnClickListener { loadMovieDetail(mMovie) }
     val adapter = ActorListAdapter()
     val video: MutableLiveData<Video?> = MutableLiveData()
     val isLiked: MutableLiveData<Boolean> = MutableLiveData()

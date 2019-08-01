@@ -17,6 +17,8 @@ import com.sun.movieapp.base.ViewModelFactory
 import com.sun.movieapp.databinding.ActivityHomeBinding
 import com.sun.movieapp.model.Movie
 import com.sun.movieapp.ui.moviedetail.MovieDetailActivity
+import com.sun.movieapp.ui.searchmovie.SearchMovieActivity
+import com.sun.movieapp.utils.ExtraStrings
 import com.sun.movieapp.utils.extensions.showError
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -24,10 +26,6 @@ class HomeActivity: BaseActivity() {
     private lateinit var mBinding: ActivityHomeBinding
     private lateinit var mViewModel: HomeViewModel
     private var isLoading = false
-
-    companion object {
-        const val MOVIE_EXTRA = "com.sun.movieapp.ui.home.MOVIE_EXTRA"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +39,7 @@ class HomeActivity: BaseActivity() {
 
         val mOnClickItemListener: (Movie) -> Unit = {
             val intent = Intent(this@HomeActivity, MovieDetailActivity::class.java)
-            intent.putExtra(MOVIE_EXTRA, it)
+            intent.putExtra(ExtraStrings.MOVIE_EXTRA, it)
             startActivity(intent)
         }
 
@@ -103,6 +101,8 @@ class HomeActivity: BaseActivity() {
         return when(item.itemId) {
             R.id.mnuSearch -> {
                 Log.d("MENU", "SEARCH")
+                val intent = Intent(this@HomeActivity, SearchMovieActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.mnuExpand -> {

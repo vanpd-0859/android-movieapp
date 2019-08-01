@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="viewModel"
+                type="com.sun.movieapp.ui.genreselection.GenreItemViewModel"/>
+    </data>
+
+    <RelativeLayout
+            android:id="@+id/rlGenreItem"
+            android:padding="10dp"
+            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{(view) -> viewModel.onItemClick(view)}"
+            app:toggleBackground="@{viewModel.isSelected()}">
+        <TextView
+                android:id="@+id/tvGenreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:mutableText="@{viewModel.getName()}"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textAlignment="center"/>
+    </RelativeLayout>
+</layout>
+

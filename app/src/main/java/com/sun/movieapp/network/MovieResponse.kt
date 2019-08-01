@@ -5,5 +5,7 @@ import com.sun.movieapp.model.Movie
 
 data class MovieResponse(
     @SerializedName("results")
-    val movies: List<Movie>
+    val movies: List<Movie>,
+    @SerializedName("total_pages")
+    val totalPages: Int
 )
