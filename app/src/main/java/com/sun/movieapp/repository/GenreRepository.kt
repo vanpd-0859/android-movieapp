@@ -11,19 +11,11 @@ class GenreRepository(
     private val mGenreService: GenreService,
     private val mGenreDao: GenreDao
 ): BaseRepository {
-    fun getGenres(): Single<List<Genre>> {
-        return mGenreService.getGenres().map { it.genres }
-    }
+    fun getGenres(): Single<List<Genre>> = mGenreService.getGenres().map { it.genres }
 
-    fun saveFavoriteGenres(genres: List<Genre>): Completable {
-        return mGenreDao.insertGenres(*genres.toTypedArray())
-    }
+    fun saveFavoriteGenres(genres: List<Genre>): Completable = mGenreDao.insertGenres(*genres.toTypedArray())
 
-    fun getFavoriteGenres(): Single<List<Genre>> {
-        return mGenreDao.getAllGenres()
-    }
+    fun getFavoriteGenres(): Single<List<Genre>> = mGenreDao.getAllGenres()
 
-    fun deleteAllFavoritesGenres(): Completable {
-        return mGenreDao.deleteAllGenres()
-    }
+    fun deleteAllFavoritesGenres(): Completable = mGenreDao.deleteAllGenres()
 }

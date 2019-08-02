@@ -12,4 +12,7 @@
     <string name="popular_movie">Popular Movies</string>
     <string name="menu_search">Search</string>
     <string name="menu_expand">Expand</string>
+    <string name="overview">Overview</string>
+    <string name="release_date">Release Date</string>
+    <string name="main_actor">Main Actors</string>
 </resources>

@@ -1,9 +1,6 @@
 package com.sun.movieapp.model
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -12,7 +9,7 @@ interface MovieDao {
     @Query("SELECT * FROM favorite_movies ORDER BY releaseDate DESC")
     fun getAllMovies(): Single<List<Movie>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(vararg movies: Movie): Completable
 
     @Query("DELETE FROM favorite_movies")
@@ -20,4 +17,7 @@ interface MovieDao {
 
     @Update
     fun updateMovie(movie: Movie): Completable
+
+    @Query("SELECT * FROM favorite_movies WHERE id = :movieId")
+    fun getMovie(movieId: Int): Single<Movie>
 }

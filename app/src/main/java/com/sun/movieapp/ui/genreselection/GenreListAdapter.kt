@@ -11,8 +11,9 @@ import com.sun.movieapp.R
 import com.sun.movieapp.databinding.RowGenreItemBinding
 import com.sun.movieapp.model.Genre
 
-class GenreListAdapter: ListAdapter<Genre, GenreListAdapter.ViewHolder>(mDiffCallback) {
-    var listener: OnItemClickListener? = null
+class GenreListAdapter(
+    private val mOnItemClick: ((Genre) -> Unit)? = null
+): ListAdapter<Genre, GenreListAdapter.ViewHolder>(mDiffCallback) {
     companion object {
         private val mDiffCallback = object: DiffUtil.ItemCallback<Genre>() {
             override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean {
@@ -44,16 +45,14 @@ class GenreListAdapter: ListAdapter<Genre, GenreListAdapter.ViewHolder>(mDiffCal
             mViewModel.listener = object: View.OnClickListener {
                 override fun onClick(view: View?) {
                     val currentItem = getItem(adapterPosition)
-                    listener?.onItemClick(currentItem)
+                    mOnItemClick?.let {
+                        it(currentItem)
+                    }
                     currentItem.isSelected = !currentItem.isSelected
                     notifyItemChanged(adapterPosition)
                 }
             }
             mBinding.viewModel = mViewModel
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(genre: Genre)
     }
 }
