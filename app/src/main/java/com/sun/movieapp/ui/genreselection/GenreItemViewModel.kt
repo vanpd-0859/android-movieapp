@@ -15,9 +15,9 @@ class GenreItemViewModel: BaseViewModel() {
         mGenre.value = genre
     }
 
-    fun getName(): LiveData<String> = Transformations.map(mGenre, { it.name })
+    fun getName(): LiveData<String> = Transformations.map(mGenre) { it.name }
 
-    fun isSelected(): LiveData<Boolean> = Transformations.map(mGenre, { it.isSelected })
+    fun isSelected(): LiveData<Boolean> = Transformations.map(mGenre) { it.isSelected }
 
     fun onItemClick(view: View?) {
         listener?.onClick(view)

@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clGenreSelection"
-            android:background="@drawable/gradient_app_backgroud"
+            android:background="@drawable/gradient_app_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

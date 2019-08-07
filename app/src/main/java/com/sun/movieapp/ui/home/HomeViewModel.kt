@@ -1,9 +1,7 @@
 package com.sun.movieapp.ui.home
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.RecyclerView
 import com.sun.movieapp.base.BaseViewModel
 import com.sun.movieapp.model.Movie
 import com.sun.movieapp.repository.MovieRepository
@@ -16,10 +14,6 @@ class HomeViewModel(
 ): BaseViewModel() {
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
-    val errorClickListener = View.OnClickListener {
-        loadUpcomingMovies()
-        loadPopularMovies()
-    }
     var upcomingMovieAdapter: MovieListAdapter? = null
     var popularMovieAdapter: MovieListAdapter? = null
     private val mUpcomingMovies: BehaviorSubject<MutableList<Movie>> = BehaviorSubject.createDefault(ArrayList())
@@ -27,10 +21,13 @@ class HomeViewModel(
     private var mUpcomingPages = 1
     private var mPopularPages = 1
 
+    init {
+        setData()
+    }
+
     fun loadData() {
         loadPopularMovies()
         loadUpcomingMovies()
-        setData()
     }
 
     fun getUpcommingMovieSize(): Int {

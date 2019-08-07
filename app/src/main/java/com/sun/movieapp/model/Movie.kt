@@ -1,5 +1,6 @@
 package com.sun.movieapp.model
 
+import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -11,12 +12,28 @@ import java.util.Date
 data class Movie(
     @field:PrimaryKey
     val id: Int,
-    val title: String,
+    var title: String = "",
     @SerializedName("vote_average")
-    val voteAverage: Double,
+    var voteAverage: Double = 0.0,
     @SerializedName("poster_path")
-    val posterPath: String,
+    var posterPath: String = "",
     @SerializedName("release_date")
-    val releaseDate: Date,
+    var releaseDate: String = "",
     var isLiked: Boolean = false
-): Serializable
+): Serializable {
+    companion object {
+        val mDiffCallback = object : DiffUtil.ItemCallback<Movie>() {
+            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                return oldItem.title == newItem.title &&
+                        oldItem.voteAverage == newItem.voteAverage &&
+                        oldItem.releaseDate == newItem.releaseDate &&
+                        oldItem.posterPath == newItem.posterPath &&
+                        oldItem.isLiked == newItem.isLiked
+            }
+        }
+    }
+}

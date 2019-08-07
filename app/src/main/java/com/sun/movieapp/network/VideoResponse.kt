@@ -5,5 +5,5 @@ import com.sun.movieapp.model.Video
 
 data class VideoResponse(
     @SerializedName("results")
-    val videos: List<Video>
+    var videos: List<Video>?
 )

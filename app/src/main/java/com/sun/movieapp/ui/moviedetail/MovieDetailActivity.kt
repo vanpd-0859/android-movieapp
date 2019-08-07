@@ -3,6 +3,7 @@ package com.sun.movieapp.ui.moviedetail
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,8 +13,9 @@ import com.sun.movieapp.base.BaseActivity
 import com.sun.movieapp.base.ViewModelFactory
 import com.sun.movieapp.databinding.ActivityMovieDetailBinding
 import com.sun.movieapp.model.Movie
-import com.sun.movieapp.ui.home.HomeActivity
 import com.sun.movieapp.utils.Constants
+import com.sun.movieapp.utils.ExtraStrings
+import com.sun.movieapp.utils.extensions.showError
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 class MovieDetailActivity: BaseActivity() {
@@ -26,7 +28,7 @@ class MovieDetailActivity: BaseActivity() {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
         mViewModel = ViewModelProviders.of(this, ViewModelFactory(this))
             .get(MovieDetailViewModel::class.java)
-        mMovie = intent.getSerializableExtra(HomeActivity.MOVIE_EXTRA) as Movie
+        mMovie = intent.getSerializableExtra(ExtraStrings.MOVIE_EXTRA) as Movie
         mViewModel.loadMovieDetail(mMovie)
         rvActor.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvActor.adapter = mViewModel.adapter
@@ -44,6 +46,10 @@ class MovieDetailActivity: BaseActivity() {
                 mViewModel.isLiked.value = !it
             }
         }
+        mViewModel.error.observe(this, Observer {
+            val listener: (View) -> Unit = { mViewModel.reload() }
+            llMovieDetail.showError(it, Pair(R.string.retry, listener))
+        })
         mBinding.viewModel = mViewModel
     }
 }

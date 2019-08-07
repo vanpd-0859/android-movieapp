@@ -1,5 +1,6 @@
 package com.sun.movieapp.network
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.sun.movieapp.utils.ApiKeys.THE_MOVIE_DB_API_KEY
@@ -9,9 +10,11 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.logging.Logger
 
 object Network {
     @JvmStatic
@@ -30,20 +33,23 @@ object Network {
 
     @JvmStatic
     fun <T>create(service: Class<T>): T {
-        val mHttpClient = mHttpClientBuilder.addInterceptor(object: Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val mOriginalRequest = chain.request()
-                val mOriginalHttpUrl = mOriginalRequest.url()
-                val mUrl = mOriginalHttpUrl.newBuilder()
-                    .addQueryParameter("api_key", THE_MOVIE_DB_API_KEY)
-                    .build()
-                val mRequest = mOriginalRequest.newBuilder()
-                    .url(mUrl).build()
-                return chain.proceed(mRequest)
-            }
-        }).build()
-        val gson = GsonBuilder().setDateFormat(DATE_FORMAT).create()
-        return setupRetrofit(mRetrofitBuilder, mHttpClient, gson)
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val mHttpClient = mHttpClientBuilder.addInterceptor { chain ->
+            val req = chain.request()
+            chain.proceed(
+                req.newBuilder()
+                    .url(
+                        req.url()
+                            .newBuilder()
+                            .addQueryParameter("api_key", THE_MOVIE_DB_API_KEY)
+                            .build()
+                    ).build()
+            )
+        }
+            .addInterceptor(loggingInterceptor)
+            .build()
+        return setupRetrofit(mRetrofitBuilder, mHttpClient)
             .create(service)
     }
 }

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sun.movieapp.R
@@ -13,19 +12,7 @@ import com.sun.movieapp.model.Genre
 
 class GenreListAdapter(
     private val mOnItemClick: ((Genre) -> Unit)? = null
-): ListAdapter<Genre, GenreListAdapter.ViewHolder>(mDiffCallback) {
-    companion object {
-        private val mDiffCallback = object: DiffUtil.ItemCallback<Genre>() {
-            override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Genre, newItem: Genre): Boolean {
-                return oldItem.name == newItem.name
-            }
-        }
-    }
-
+): ListAdapter<Genre, GenreListAdapter.ViewHolder>(Genre.mDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val mBinding: RowGenreItemBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -42,15 +29,11 @@ class GenreListAdapter(
 
         fun bind(genre: Genre){
             mViewModel.bind(genre)
-            mViewModel.listener = object: View.OnClickListener {
-                override fun onClick(view: View?) {
-                    val currentItem = getItem(adapterPosition)
-                    mOnItemClick?.let {
-                        it(currentItem)
-                    }
-                    currentItem.isSelected = !currentItem.isSelected
-                    notifyItemChanged(adapterPosition)
-                }
+            mViewModel.listener = View.OnClickListener {
+                val currentItem = getItem(adapterPosition)
+                mOnItemClick?.invoke(currentItem)
+                currentItem.isSelected = !currentItem.isSelected
+                notifyItemChanged(adapterPosition)
             }
             mBinding.viewModel = mViewModel
         }

@@ -53,7 +53,8 @@ class GenreSelectionActivity: BaseActivity() {
 
         mViewModel = ViewModelProviders.of(this, ViewModelFactory(this)).get(GenreSelectionViewModel::class.java)
         mViewModel.error.observe(this, Observer {
-            clGenreSelection.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
+            val listener: (View) -> Unit = { mViewModel.loadGenres() }
+            clGenreSelection.showError(it, Pair(R.string.retry, listener))
         })
         mBinding.viewModel = mViewModel
         mViewModel.isDoneButtonEnabled.observe(this, Observer {

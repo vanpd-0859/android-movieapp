@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="viewModel"
+                  type="com.sun.movieapp.ui.searchmovie.SearchMovieItemViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:onClick="@{(view) -> viewModel.onItemClick(view)}"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/tvReleaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:textColor="@android:color/white"
+                app:mutableText="@{viewModel.getReleaseDate()}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cvPoster"
+        />
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/cvPoster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvReleaseDate">
+            <ImageView
+                    android:id="@+id/imvPoster"
+                    android:adjustViewBounds="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="200dp"
+                    app:imageSrc="@{viewModel.getPosterPath()}"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:maxLines="5"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:textColor="@android:color/white"
+                app:mutableText="@{viewModel.getTitle()}"
+                app:layout_constraintStart_toEndOf="@+id/cvPoster"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+                android:id="@+id/imvStar"
+                android:src="@drawable/ic_star"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"/>
+
+        <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:mutableText="@{viewModel.getRating()}"
+                app:layout_constraintStart_toEndOf="@id/imvStar"
+                app:layout_constraintBottom_toBottomOf="@+id/imvStar"
+                app:layout_constraintTop_toTopOf="@+id/imvStar"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
