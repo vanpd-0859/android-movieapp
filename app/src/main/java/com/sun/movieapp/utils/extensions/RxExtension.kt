@@ -7,17 +7,9 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.Emitter
-import android.R.attr.button
-import android.R.attr.button
-import io.reactivex.functions.Cancellable
-import android.R.attr.button
-
-
-
-
-
-
+import android.widget.SearchView
+import io.reactivex.Maybe
+import java.lang.NullPointerException
 
 fun Completable.async() =
     subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -49,3 +41,50 @@ fun View.click(): Observable<Unit> {
         this.setOnClickListener { emitter.onNext(Unit) }
     }
 }
+
+fun SearchView.listen(): Observable<String> {
+    return Observable.create { emitter ->
+        emitter.setCancellable {
+            this.setOnQueryTextListener(null)
+            emitter.onComplete()
+        }
+        this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(text: String): Boolean {
+                emitter.onNext(text)
+                return true
+            }
+            override fun onQueryTextChange(text: String): Boolean {
+                emitter.onNext(text)
+                return true
+            }
+        })
+    }
+}
+
+fun <T> Single<T>.mapToUnit() = map { Unit }
+fun <T> Observable<T>.mapToUnit() = map { Unit }
+fun <T> Maybe<T>.mapToUnit() = map { Unit }
+
+fun <T> Single<T>.catchNullException() = onErrorResumeNext {
+    when(it) {
+        is NullPointerException -> Single.never()
+        else -> Single.error(it)
+    }
+}
+
+fun <T> Observable<T>.catchNullException() = onErrorResumeNext { it: Throwable ->
+    when(it) {
+        is NullPointerException -> Observable.empty()
+        else -> Observable.error(it)
+    }
+}
+
+fun <T> Maybe<T>.catchNullException() = onErrorResumeNext { it: Throwable ->
+    when(it) {
+        is NullPointerException -> Maybe.empty()
+        else -> Maybe.error(it)
+    }
+}
+
+
+

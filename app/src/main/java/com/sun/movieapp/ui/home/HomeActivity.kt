@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 class HomeActivity: BaseActivity() {
     private lateinit var mBinding: ActivityHomeBinding
     private lateinit var mViewModel: HomeViewModel
-    private var isLoading = false
+    private var mIsLoading = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +56,10 @@ class HomeActivity: BaseActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (!isLoading) {
+                if (!mIsLoading) {
                     //Log.d("SCROLL", "rvPopularMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}")
                     if (layoutManager.findLastCompletelyVisibleItemPosition() == mViewModel.getPopularMovieSize()) {
                         mViewModel.loadMorePopularMovies()
-                        isLoading = true
                     }
                 }
             }
@@ -70,7 +69,7 @@ class HomeActivity: BaseActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                if (!isLoading) {
+                if (!mIsLoading) {
                     //Log.d("SCROLL", "rvUpcomingMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}")
                     if (layoutManager.findLastCompletelyVisibleItemPosition() == mViewModel.getUpcommingMovieSize()) {
                         mViewModel.loadMoreUpcomingMovies()
@@ -80,7 +79,7 @@ class HomeActivity: BaseActivity() {
         })
 
         mViewModel.loading.observe(this, Observer {
-            isLoading = it
+            mIsLoading = it
         })
 
         mViewModel.error.observe(this, Observer {

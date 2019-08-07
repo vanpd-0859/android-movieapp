@@ -18,7 +18,7 @@ fun View.getParentActivity(): AppCompatActivity? {
     return null
 }
 
-fun View.showError(error: Throwable, action: Pair<Int, View.OnClickListener>?) {
+fun View.showError(error: Throwable, action: Pair<Int, (View) -> Unit>?) {
     val mErrorString = when(error) {
         is UnknownHostException -> resources.getString(R.string.post_error)
         else -> error.localizedMessage

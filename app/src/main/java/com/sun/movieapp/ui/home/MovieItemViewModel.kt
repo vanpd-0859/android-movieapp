@@ -15,11 +15,11 @@ class MovieItemViewModel: BaseViewModel() {
         mMovie.value = movie
     }
 
-    fun getTitle(): LiveData<String> = Transformations.map(mMovie, { it.title })
+    fun getTitle(): LiveData<String> = Transformations.map(mMovie) { it.title }
 
-    fun getRating(): LiveData<String> = Transformations.map(mMovie, { "${it.voteAverage} / 10" })
+    fun getRating(): LiveData<String> = Transformations.map(mMovie) { "${it.voteAverage} / 10" }
 
-    fun getPosterPath(): LiveData<String> = Transformations.map(mMovie, { it.posterPath })
+    fun getPosterPath(): LiveData<String> = Transformations.map(mMovie) { it.posterPath }
 
     fun onItemClick(view: View?) {
         listener?.onClick(view)

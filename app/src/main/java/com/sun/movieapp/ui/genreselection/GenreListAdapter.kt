@@ -29,13 +29,11 @@ class GenreListAdapter(
 
         fun bind(genre: Genre){
             mViewModel.bind(genre)
-            mViewModel.listener = object: View.OnClickListener {
-                override fun onClick(view: View?) {
-                    val currentItem = getItem(adapterPosition)
-                    mOnItemClick?.invoke(currentItem)
-                    currentItem.isSelected = !currentItem.isSelected
-                    notifyItemChanged(adapterPosition)
-                }
+            mViewModel.listener = View.OnClickListener {
+                val currentItem = getItem(adapterPosition)
+                mOnItemClick?.invoke(currentItem)
+                currentItem.isSelected = !currentItem.isSelected
+                notifyItemChanged(adapterPosition)
             }
             mBinding.viewModel = mViewModel
         }

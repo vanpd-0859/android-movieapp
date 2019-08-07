@@ -20,14 +20,15 @@ import com.sun.movieapp.utils.ExtraStrings
 import com.sun.movieapp.utils.extensions.showError
 import kotlinx.android.synthetic.main.activity_search_movie.*
 import androidx.recyclerview.widget.RecyclerView
-import com.sun.movieapp.utils.RxSearchObservable
 import com.sun.movieapp.utils.extensions.dismissKeyboard
+import com.sun.movieapp.utils.extensions.listen
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 
 class SearchMovieActivity: BaseActivity() {
     private lateinit var mViewModel: SearchMovieViewModel
     private lateinit var mBinding: ActivitySearchMovieBinding
-    private val mGenreIdList: BehaviorSubject<MutableList<Int>> = BehaviorSubject.createDefault(ArrayList())
+    private var mIsLoading = false
 
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,60 +40,33 @@ class SearchMovieActivity: BaseActivity() {
             intent.putExtra(ExtraStrings.MOVIE_EXTRA, it)
             startActivity(intent)
         }
-        mViewModel.genreAdapter = SearchGenreListAdapter { genre ->
-            mGenreIdList.value?.let {
-                val currentList= it
-                if (currentList.contains(genre.id)) currentList.remove(genre.id) else currentList.add(genre.id)
-                mGenreIdList.onNext(currentList)
-            }
-        }
+
         rvGenre.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvGenre.adapter = mViewModel.genreAdapter
+
         rvSearchMovie.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         rvSearchMovie.adapter = mViewModel.movieAdapter
         rvSearchMovie.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                Log.d("SCROLL", "rvSearchMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}, movieSize = ${mViewModel.getMovieListSize()}")
+                if (!mIsLoading && dy > 0) {
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == mViewModel.getMovieListSize()) {
+                        mViewModel.loadMore()
+                    }
+                }
                 if (dy > 0) dismissKeyboard()
             }
         })
 
+        mViewModel.loadingLoadMore.observe(this, Observer {
+            mIsLoading = it
+        })
         mViewModel.error.observe(this, Observer {
             clSearchMovie.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
         })
-
-        mViewModel.searchMovieByGenre(mGenreIdList)
         mBinding.viewModel = mViewModel
-        val fragment = PagingFragment()
-        mViewModel.paging(fragment.currentPage)
-        addFragment(fragment)
-        hideFragment(fragment)
-        mViewModel.totalPages.observe(this, Observer {
-            if (it > 0) {
-                showFragment(fragment)
-                fragment.updateTotalPages(it)
-            } else {
-                hideFragment(fragment)
-            }
-        })
-    }
-
-    private fun addFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.llContainer, fragment)
-        transaction.commit()
-    }
-
-    private fun showFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.show(fragment)
-        transaction.commit()
-    }
-
-    private fun hideFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.hide(fragment)
-        transaction.commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -101,7 +75,7 @@ class SearchMovieActivity: BaseActivity() {
             val mSearchView = it.findItem(R.id.searchBar).actionView as SearchView
             mSearchView.queryHint = resources.getString(R.string.search_movie)
             mSearchView.isIconified = false
-            mViewModel.searchMovie(RxSearchObservable.fromView(mSearchView))
+            mViewModel.searchMovie(mSearchView.listen())
         }
         return true
     }

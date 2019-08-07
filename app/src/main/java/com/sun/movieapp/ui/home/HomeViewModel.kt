@@ -1,9 +1,7 @@
 package com.sun.movieapp.ui.home
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.RecyclerView
 import com.sun.movieapp.base.BaseViewModel
 import com.sun.movieapp.model.Movie
 import com.sun.movieapp.repository.MovieRepository
@@ -16,7 +14,7 @@ class HomeViewModel(
 ): BaseViewModel() {
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
-    val errorClickListener = View.OnClickListener {
+    val errorClickListener: (View) -> Unit = {
         loadUpcomingMovies()
         loadPopularMovies()
     }

@@ -4,15 +4,15 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class MovieDetail(
-    val id: Int,
-    val title: String,
-    val overview: String,
+    var id: Int,
+    var title: String = "",
+    var overview: String = "",
     @SerializedName("vote_average")
-    val voteAverage: Double,
+    var voteAverage: Double = 0.0,
     @SerializedName("poster_path")
-    val posterPath: String,
+    var posterPath: String = "",
     @SerializedName("release_date")
-    val releaseDate: Date,
+    var releaseDate: String = "",
     @SerializedName("backdrop_path")
-    val backDropPath: String
+    var backDropPath: String = ""
 )

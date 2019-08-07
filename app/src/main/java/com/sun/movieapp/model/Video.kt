@@ -1,6 +1,6 @@
 package com.sun.movieapp.model
 
 data class Video(
-    val key: String,
-    val name: String
+    var key: String = "",
+    var name: String = ""
 )

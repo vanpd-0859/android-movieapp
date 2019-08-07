@@ -8,7 +8,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.sun.movieapp"
-        minSdkVersion 28
+        minSdkVersion 25
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -43,6 +43,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    // OKHttp
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
 
     // Dagger 2
     implementation "com.google.dagger:dagger:$dagger2_version"

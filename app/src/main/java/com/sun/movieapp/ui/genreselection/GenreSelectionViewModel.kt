@@ -15,7 +15,7 @@ class GenreSelectionViewModel(
 ): BaseViewModel() {
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
-    val errorClickListener = View.OnClickListener { loadGenres() }
+    val errorClickListener: (View) -> Unit = { loadGenres() }
     val genreListAdapter = GenreListAdapter {
         mSelectedGenres.value?.let { selectedGenres ->
             val genres = selectedGenres

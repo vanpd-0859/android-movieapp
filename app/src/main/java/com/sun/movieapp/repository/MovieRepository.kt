@@ -6,6 +6,7 @@ import com.sun.movieapp.network.MovieResponse
 import com.sun.movieapp.network.MovieService
 import io.reactivex.Completable
 import io.reactivex.Single
+import java.util.stream.Collectors
 
 class MovieRepository(
     private val mMovieService: MovieService,
@@ -29,14 +30,11 @@ class MovieRepository(
 
     fun getMovieDetail(movieId: Int): Single<MovieDetail> = mMovieService.getMovieDetail(movieId)
     fun getCast(movieId: Int): Single<List<Actor>> = mMovieService.getCast(movieId).map { it.cast }
-    fun getVideoOrNull(movieId: Int): Single<Video?> = mMovieService.getVideos(movieId).map { it.videos.firstOrNull() }
+    fun getVideoOrNull(movieId: Int): Single<Video?> = mMovieService.getVideos(movieId).map { it.videos?.firstOrNull() }
     fun searchMovie(query: String, page: Int = 1): Single<MovieResponse> = mMovieService.searchMovie(query, page)
 
     fun searchMovieByGenre(genreIdList: List<Int>, page: Int = 1): Single<MovieResponse> {
-        var stringIdList = ""
-        genreIdList.forEachIndexed { index, element ->
-            stringIdList += if (index == 0) "${element}" else ",${element}"
-        }
+        val stringIdList = genreIdList.stream().map { "$it" }.collect(Collectors.joining(","))
         return mMovieService.searchMovieByGenre(stringIdList, page)
     }
 }
