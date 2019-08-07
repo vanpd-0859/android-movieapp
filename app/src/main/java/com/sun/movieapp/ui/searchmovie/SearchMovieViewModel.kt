@@ -25,7 +25,6 @@ class SearchMovieViewModel(
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val loadingLoadMore: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
-    val errorClickListener: (View) -> Unit = { loadData() }
     var genreAdapter = SearchGenreListAdapter { genre ->
         mGenreIdList.value?.let {
             val currentList= it
@@ -41,7 +40,7 @@ class SearchMovieViewModel(
         loadData()
     }
 
-    private fun loadData() {
+    fun loadData() {
         rx {
             mGenreRepository.getGenres()
                 .async()

@@ -3,6 +3,7 @@ package com.sun.movieapp.ui.moviedetail
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -46,7 +47,8 @@ class MovieDetailActivity: BaseActivity() {
             }
         }
         mViewModel.error.observe(this, Observer {
-            llMovieDetail.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
+            val listener: (View) -> Unit = { mViewModel.reload() }
+            llMovieDetail.showError(it, Pair(R.string.retry, listener))
         })
         mBinding.viewModel = mViewModel
     }

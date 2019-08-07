@@ -14,10 +14,6 @@ class HomeViewModel(
 ): BaseViewModel() {
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
-    val errorClickListener: (View) -> Unit = {
-        loadUpcomingMovies()
-        loadPopularMovies()
-    }
     var upcomingMovieAdapter: MovieListAdapter? = null
     var popularMovieAdapter: MovieListAdapter? = null
     private val mUpcomingMovies: BehaviorSubject<MutableList<Movie>> = BehaviorSubject.createDefault(ArrayList())
@@ -25,10 +21,13 @@ class HomeViewModel(
     private var mUpcomingPages = 1
     private var mPopularPages = 1
 
+    init {
+        setData()
+    }
+
     fun loadData() {
         loadPopularMovies()
         loadUpcomingMovies()
-        setData()
     }
 
     fun getUpcommingMovieSize(): Int {

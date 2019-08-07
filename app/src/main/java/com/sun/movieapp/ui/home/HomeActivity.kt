@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -83,7 +84,8 @@ class HomeActivity: BaseActivity() {
         })
 
         mViewModel.error.observe(this, Observer {
-            clHome.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
+            val listener: (View) -> Unit = { mViewModel.loadData() }
+            clHome.showError(it, Pair(R.string.retry, listener))
         })
 
         mViewModel.loadData()

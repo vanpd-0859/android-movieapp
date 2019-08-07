@@ -20,7 +20,6 @@ class MovieDetailViewModel(
 ): BaseViewModel() {
     val loading: MutableLiveData<Boolean> = MutableLiveData()
     val error: MutableLiveData<Throwable> = MutableLiveData()
-    val errorClickListener: (View) -> Unit = { loadMovieDetail(mMovie) }
     val adapter = ActorListAdapter()
     val video: MutableLiveData<Video> = MutableLiveData()
     val isLiked: MutableLiveData<Boolean> = MutableLiveData()
@@ -30,6 +29,8 @@ class MovieDetailViewModel(
     init {
         isLiked.value = false
     }
+
+    fun reload() = loadMovieDetail(mMovie)
 
     fun loadMovieDetail(movie: Movie) {
         mMovie = movie

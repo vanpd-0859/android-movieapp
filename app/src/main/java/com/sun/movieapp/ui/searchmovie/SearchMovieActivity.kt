@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -50,7 +51,7 @@ class SearchMovieActivity: BaseActivity() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                Log.d("SCROLL", "rvSearchMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}, movieSize = ${mViewModel.getMovieListSize()}")
+                //Log.d("SCROLL", "rvSearchMovie + ${layoutManager.findLastCompletelyVisibleItemPosition()}, movieSize = ${mViewModel.getMovieListSize()}")
                 if (!mIsLoading && dy > 0) {
                     if (layoutManager.findLastCompletelyVisibleItemPosition() == mViewModel.getMovieListSize()) {
                         mViewModel.loadMore()
@@ -64,7 +65,8 @@ class SearchMovieActivity: BaseActivity() {
             mIsLoading = it
         })
         mViewModel.error.observe(this, Observer {
-            clSearchMovie.showError(it, Pair(R.string.retry, mViewModel.errorClickListener))
+            val listener: (View) -> Unit = { mViewModel.loadData() }
+            clSearchMovie.showError(it, Pair(R.string.retry, listener))
         })
         mBinding.viewModel = mViewModel
     }
